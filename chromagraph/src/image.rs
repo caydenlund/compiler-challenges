@@ -51,15 +51,11 @@ impl Image {
     #[allow(clippy::cast_sign_loss, clippy::cast_possible_truncation)]
     pub fn write_raw(&self, mut out: impl io::Write) -> io::Result<()> {
         let mut buf = Vec::with_capacity(3 * self.width);
-        for r in 0.. {
-            let start = r * self.width;
-            if r == self.pixels.len() {
-                break;
-            }
-            for [r, g, b] in &self.pixels[start..start + self.width] {
-                buf.push((r.clamp(0., 1.) * 255.999) as u8);
-                buf.push((g.clamp(0., 1.) * 255.999) as u8);
-                buf.push((b.clamp(0., 1.) * 255.999) as u8);
+        for row in self.pixels.chunks_exact(self.width) {
+            for [r, g, b] in row {
+                buf.push((r * 256.).clamp(0., 255.) as u8);
+                buf.push((g * 256.).clamp(0., 255.) as u8);
+                buf.push((b * 256.).clamp(0., 255.) as u8);
             }
             out.write_all(&buf)?;
             buf.clear();

@@ -57,6 +57,12 @@ pub enum Expr {
     And(ValueId, ValueId),
     /// True when at least one of the given boolean values is true
     Or(ValueId, ValueId),
+    /// Conditionally select (float) one or another value based on (bool) predicate
+    Select {
+        cond: ValueId,
+        if_true: ValueId,
+        if_false: ValueId,
+    },
 }
 
 /// An enumeration of the various unary operations on floating-point values
@@ -152,7 +158,7 @@ pub fn parse(text: &str) -> Result<Chromagraph, ParseError> {
             line: line.into(),
         })?;
         let (arg_vals, arg_types) = if op == "const" {
-            (Vec::new(), vec![ValueType::Float; words.len() - 2])
+            (Vec::new(), vec![ValueType::Float; words[3..].len()])
         } else {
             words[3..].iter().try_fold(
                 (Vec::new(), Vec::new()),
@@ -192,6 +198,11 @@ pub fn parse(text: &str) -> Result<Chromagraph, ParseError> {
             "not" => Expr::Not(arg_vals[0]),
             "and" => Expr::And(arg_vals[0], arg_vals[1]),
             "or" => Expr::Or(arg_vals[0], arg_vals[1]),
+            "select" => Expr::Select {
+                cond: arg_vals[0],
+                if_true: arg_vals[1],
+                if_false: arg_vals[2],
+            },
             _ => unreachable!("operations are checked above"),
         };
         let value_type = result_type_for(op);
@@ -214,6 +225,7 @@ fn arg_types_for(op: &str) -> Option<&'static [ValueType]> {
         }
         "not" => Some(&[Bool]),
         "and" | "or" => Some(&[Bool, Bool]),
+        "select" => Some(&[Bool, Float, Float]),
         _ => None,
     }
 }
