@@ -139,3 +139,4 @@ They vary in complexity, roughly in the following order:
 
 Can you design a higher-level language that you can translate to Chromagraphs' primitive assembly-like instructions?
 Can you design interesting graphics or fractals that take more work than you could feasibly write in a Chromagraph by hand?
+What about a program that can generate a Chromagraph that renders a heatmap of given data?
