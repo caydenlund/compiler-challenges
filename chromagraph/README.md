@@ -84,31 +84,38 @@ def run(program, x, y, aspect):
     values = []
     for op, args in ops:
         get = lambda index: values[args[index]]
+        # () -> f32
         if op == "x": values.append(x)
         elif op == "y": values.append(y)
         elif op == "aspect": values.append(aspect)
         elif op == "const": values.append(args[0])
+        # f32 -> f32
         elif op == "neg": values.append(-get(0))
         elif op == "abs": values.append(abs(get(0)))
         elif op == "sqrt": values.append(math.sqrt(get(0)))
-        elif op == "floor": values.append(math.floor(get(0)))
-        elif op == "fract": values.append(math.modf(get(0))[0])
-        elif op == "not": values.append(not get(0))
-        elif op == "select": values.append(get(1) if get(0) else get(2))
+        elif op == "ipart": values.append(math.modf(get(0))[1])
+        elif op == "fpart": values.append(math.modf(get(0))[0])
+        # (f32, f32) -> f32
         elif op == "add": values.append(get(0) + get(1))
         elif op == "sub": values.append(get(0) - get(1))
         elif op == "mul": values.append(get(0) * get(1))
         elif op == "div": values.append(get(0) / get(1))
         elif op == "min": values.append(min(get(0), get(1)))
         elif op == "max": values.append(max(get(0), get(1)))
+        # (f32, f32) -> bool
         elif op == "lt": values.append(get(0) < get(1))
         elif op == "leq": values.append(get(0) <= get(1))
         elif op == "eq": values.append(get(0) == get(1))
+        # logic
+        elif op == "not": values.append(not get(0))
         elif op == "and": values.append(get(0) and get(1))
         elif op == "or": values.append(get(0) or get(1))
+        elif op == "select": values.append(get(1) if get(0) else get(2))
         else: raise ValueError("unknown op: '" + op + "'")
     return [values[index] for index in ret]
 ```
+
+A more fully-featured interpreter in Rust, including more sophisticated error handling and actual image generation, can be found in the [`src/` directory](./src).
 
 Instead of control flow in the programs, all branches are eagerly executed and the result is chosen afterwards with the `select` instruction.
 Can you write an interpreter that identifies subexpressions that are only used conditionally?
