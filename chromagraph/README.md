@@ -120,4 +120,15 @@ A more fully-featured interpreter in Rust, including more sophisticated error ha
 Instead of control flow in the programs, all branches are eagerly executed and the result is chosen afterwards with the `select` instruction.
 Can you write an interpreter that identifies subexpressions that are only used conditionally?
 What other optimizations can you make?
-Does a backend like LLVM or Cranelift provide a net benefit in a JIT context?
+Can you write a JIT or an AOT compiler?
+Does a heavy backend like LLVM provide a net benefit in a JIT context?
+What about Cranelift?
+
+## Benchmarks
+
+All benchmarks can be found in the `benches/` directory, alongside a sample render in 512x512 dimensions.
+They vary in complexity, roughly in the following order:
+
+- `gradient`: draws a gradient depending only on `x/aspect` and `y`
+- `circle`: draws a white circle on a black background
+- `simple-shapes`: draws a square, a circle, a triangle, and a hexagon

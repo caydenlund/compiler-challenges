@@ -1,0 +1,114 @@
+# draws a square, a circle, a triangle, and a hexagon
+
+v0 = x
+v1 = y
+v2 = aspect
+
+v3 = const 0.2
+v4 = const 0.6
+v5 = mul v3 v2
+v6 = mul v4 v2
+v7 = neg v5
+v8 = neg v6
+
+# square centered at (-0.6 * aspect, 0.52)
+v9 = sub v0 v8
+v10 = abs v9
+v11 = const 0.52
+v12 = sub v1 v11
+v13 = abs v12
+v14 = const 0.45
+v15 = leq v10 v14
+v16 = leq v13 v14
+v17 = and v15 v16
+
+# circle centered at (-0.2 * aspect, -0.48)
+v18 = sub v0 v7
+v19 = const -0.48
+v20 = sub v1 v19
+v21 = mul v18 v18
+v22 = mul v20 v20
+v23 = add v21 v22
+v24 = const 0.50
+v25 = mul v24 v24
+v26 = leq v23 v25
+
+# triangle centered at (0.2 * aspect, 0.30)
+v27 = sub v0 v5
+v28 = abs v27
+v29 = const 0.30
+v30 = sub v1 v29
+v31 = const 1.732
+v32 = mul v31 v28
+v33 = add v30 v32
+v34 = const 0.66
+v35 = const -0.33
+v36 = leq v30 v34
+v37 = leq v35 v30
+v38 = leq v33 v34
+v39 = and v36 v37
+v40 = and v39 v38
+
+# hexagon centered at (0.6 * aspect, -0.38)
+v41 = sub v0 v6
+v42 = abs v41
+v43 = const -0.38
+v44 = sub v1 v43
+v45 = abs v44
+v46 = const 0.60
+v47 = const 0.52
+v48 = leq v42 v46
+v49 = leq v45 v47
+v50 = mul v31 v42
+v51 = add v50 v45
+v52 = const 1.04
+v53 = leq v51 v52
+v54 = and v48 v49
+v55 = and v54 v53
+
+# bg color
+v56 = const 0.173
+v57 = const 0.243
+v58 = const 0.314
+
+# square color
+v59 = const 0.102
+v60 = const 0.737
+v61 = const 0.612
+
+# circle color
+v62 = const 0.204
+v63 = const 0.596
+v64 = const 0.859
+
+# triangle color
+v65 = const 0.945
+v66 = const 0.769
+v67 = const 0.059
+
+# hexagon color
+v68 = const 0.906
+v69 = const 0.298
+v70 = const 0.235
+
+# draw square over bg
+v71 = select v17 v59 v56
+v72 = select v17 v60 v57
+v73 = select v17 v61 v58
+
+# draw circle over square, bg
+v74 = select v26 v62 v71
+v75 = select v26 v63 v72
+v76 = select v26 v64 v73
+
+# draw triangle over circle, square, bg
+v77 = select v40 v65 v74
+v78 = select v40 v66 v75
+v79 = select v40 v67 v76
+
+# draw hexagon over triangle, circle, square, bg
+v80 = select v55 v68 v77
+v81 = select v55 v69 v78
+v82 = select v55 v70 v79
+
+return v80 v81 v82

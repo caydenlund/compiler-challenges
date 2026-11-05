@@ -1,0 +1,24 @@
+# draws a white circle on a black background
+
+v0 = x
+v1 = y
+v2 = aspect
+
+# radius = min(aspect, 1)
+v3 = const 1.0
+v4 = min v3 v2
+
+# x^2 + y^2
+v5 = mul v0 v0
+v6 = mul v1 v1
+v7 = add v5 v6
+
+# is inside circle?
+v8 = mul v4 v4
+v9 = leq v7 v8
+
+# choose color: black or white
+v10 = const 0.0
+v11 = select v9 v3 v10
+
+return v11 v11 v11

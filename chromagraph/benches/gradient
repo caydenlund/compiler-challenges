@@ -1,0 +1,19 @@
+# draws a gradient based on `x` and `y`
+
+v0 = x
+v1 = y
+v2 = aspect
+
+# y in [-1, 1] => r in [0, 1]
+v3 = const 1.0
+v4 = add v1 v3
+v5 = const 2.0
+v6 = div v4 v5
+
+# x in [-aspect, aspect] => g in [0, 1]
+v7 = add v0 v2
+v8 = mul v2 v5
+v9 = div v7 v8
+
+v10 = const 0.0
+return v6 v9 v10
