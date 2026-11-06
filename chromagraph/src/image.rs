@@ -18,7 +18,7 @@ impl Image {
     #[must_use]
     pub fn new(width: usize, height: usize) -> Self {
         assert!(width > 0, "image width must be positive");
-        assert!(height > 0, "image heightk must be positive");
+        assert!(height > 0, "image height must be positive");
         Self {
             pixels: vec![[0.; 3]; width * height].into_boxed_slice(),
             width,

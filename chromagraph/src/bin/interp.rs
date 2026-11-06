@@ -52,46 +52,51 @@ fn interp(prgm: &Chromagraph, x: f32, y: f32, aspect: f32) -> [f32; 3] {
     let mut values: Vec<Value> = Vec::with_capacity(prgm.exprs.len());
 
     for expr in &prgm.exprs {
-        values.push(match expr {
+        let val_float = |id: &ValueId| values[usize::from(*id)].as_float();
+        let val_bool = |id: &ValueId| values[usize::from(*id)].as_bool();
+
+        let v = match expr {
             Expr::X => Float(x),
             Expr::Y => Float(y),
             Expr::Aspect => Float(aspect),
             Expr::Const(c) => Float(*c),
-            Expr::Unary(UnaryOp::Neg, v) => Float(-values[v.0].f()),
-            Expr::Unary(UnaryOp::Abs, v) => Float(values[v.0].f().abs()),
-            Expr::Unary(UnaryOp::Sqrt, v) => Float(values[v.0].f().sqrt()),
-            Expr::Unary(UnaryOp::Ipart, v) => Float(values[v.0].f().fract()),
-            Expr::Unary(UnaryOp::Fpart, v) => Float(values[v.0].f().trunc()),
-            Expr::Binary(BinaryOp::Add, l, r) => Float(values[l.0].f() + values[r.0].f()),
-            Expr::Binary(BinaryOp::Sub, l, r) => Float(values[l.0].f() - values[r.0].f()),
-            Expr::Binary(BinaryOp::Mul, l, r) => Float(values[l.0].f() * values[r.0].f()),
-            Expr::Binary(BinaryOp::Div, l, r) => Float(values[l.0].f() / values[r.0].f()),
-            Expr::Binary(BinaryOp::Min, l, r) => Float(f32::min(values[l.0].f(), values[r.0].f())),
-            Expr::Binary(BinaryOp::Max, l, r) => Float(f32::max(values[l.0].f(), values[r.0].f())),
-            Expr::Lt(l, r) => Bool(values[l.0].f() < values[r.0].f()),
-            Expr::Leq(l, r) => Bool(values[l.0].f() <= values[r.0].f()),
-            Expr::Eq(l, r) => Bool(values[l.0].f() == values[r.0].f()),
-            Expr::Not(v) => Bool(!values[v.0].b()),
-            Expr::And(l, r) => Bool(values[l.0].b() && values[r.0].b()),
-            Expr::Or(l, r) => Bool(values[l.0].b() || values[r.0].b()),
+            Expr::Unary(UnaryOp::Neg, v) => Float(-val_float(v)),
+            Expr::Unary(UnaryOp::Abs, v) => Float(val_float(v).abs()),
+            Expr::Unary(UnaryOp::Sqrt, v) => Float(val_float(v).sqrt()),
+            Expr::Unary(UnaryOp::Ipart, v) => Float(val_float(v).fract()),
+            Expr::Unary(UnaryOp::Fpart, v) => Float(val_float(v).trunc()),
+            Expr::Binary(BinaryOp::Add, l, r) => Float(val_float(l) + val_float(r)),
+            Expr::Binary(BinaryOp::Sub, l, r) => Float(val_float(l) - val_float(r)),
+            Expr::Binary(BinaryOp::Mul, l, r) => Float(val_float(l) * val_float(r)),
+            Expr::Binary(BinaryOp::Div, l, r) => Float(val_float(l) / val_float(r)),
+            Expr::Binary(BinaryOp::Min, l, r) => Float(f32::min(val_float(l), val_float(r))),
+            Expr::Binary(BinaryOp::Max, l, r) => Float(f32::max(val_float(l), val_float(r))),
+            Expr::Lt(l, r) => Bool(val_float(l) < val_float(r)),
+            Expr::Leq(l, r) => Bool(val_float(l) <= val_float(r)),
+            Expr::Eq(l, r) => Bool(val_float(l) == val_float(r)),
+            Expr::Not(v) => Bool(!val_bool(v)),
+            Expr::And(l, r) => Bool(val_bool(l) && val_bool(r)),
+            Expr::Or(l, r) => Bool(val_bool(l) || val_bool(r)),
             Expr::Select {
                 cond,
                 if_true,
                 if_false,
             } => {
-                if values[cond.0].b() {
-                    Float(values[if_true.0].f())
+                if val_bool(cond) {
+                    Float(val_float(if_true))
                 } else {
-                    Float(values[if_false.0].f())
+                    Float(val_float(if_false))
                 }
             }
-        });
+        };
+
+        values.push(v);
     }
 
     [
-        values[prgm.ret[0].0].f(),
-        values[prgm.ret[1].0].f(),
-        values[prgm.ret[2].0].f(),
+        values[usize::from(prgm.ret[0])].as_float(),
+        values[usize::from(prgm.ret[1])].as_float(),
+        values[usize::from(prgm.ret[2])].as_float(),
     ]
 }
 
@@ -102,14 +107,14 @@ enum Value {
 }
 
 impl Value {
-    fn f(self) -> f32 {
+    fn as_float(self) -> f32 {
         let Self::Float(f) = self else {
             panic!("trying to unwrap a non-float value as a float");
         };
         f
     }
 
-    fn b(self) -> bool {
+    fn as_bool(self) -> bool {
         let Self::Bool(b) = self else {
             panic!("trying to unwrap a non-bool value as a bool");
         };
