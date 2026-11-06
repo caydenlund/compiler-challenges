@@ -1,114 +1,117 @@
 # draws a square, a circle, a triangle, and a hexagon
 
-v0 = x
-v1 = y
-v2 = aspect
 
-v3 = const 0.2
-v4 = const 0.6
-v5 = mul v3 v2
-v6 = mul v4 v2
-v7 = neg v5
-v8 = neg v6
+# inputs & constants
+# ------------------
+
+f_x = x
+f_y = y
+f_aspect = aspect
+
+c_bg_r = const 0.173
+c_bg_g = const 0.243
+c_bg_b = const 0.314
+
+c_sq_r = const 0.102
+c_sq_g = const 0.737
+c_sq_b = const 0.612
+
+c_cir_r = const 0.204
+c_cir_g = const 0.596
+c_cir_b = const 0.859
+
+c_tri_r = const 0.945
+c_tri_g = const 0.769
+c_tri_b = const 0.059
+
+c_hex_r = const 0.906
+c_hex_g = const 0.298
+c_hex_b = const 0.235
+
+
+# shape positions
+# ---------------
+
+c_tri_x = const 0.2
+f_tri_x = mul c_tri_x f_aspect
+c_hex_x = const 0.6
+f_hex_x = mul c_hex_x f_aspect
+f_cir_x = neg f_tri_x
+f_sq_x = neg f_hex_x
+
+
+# shapes
+# ------
 
 # square centered at (-0.6 * aspect, 0.52)
-v9 = sub v0 v8
-v10 = abs v9
-v11 = const 0.52
-v12 = sub v1 v11
-v13 = abs v12
-v14 = const 0.45
-v15 = leq v10 v14
-v16 = leq v13 v14
-v17 = and v15 v16
+f_sq_dx = sub f_x f_sq_x
+f_sq_dx_abs = abs f_sq_dx
+c_sq_y = const 0.52
+f_sq_dy = sub f_y c_sq_y
+f_sq_dy_abs = abs f_sq_dy
+c_sq_half_width = const 0.45
+b_sq_in_x = leq f_sq_dx_abs c_sq_half_width
+b_sq_in_y = leq f_sq_dy_abs c_sq_half_width
+b_sq = and b_sq_in_x b_sq_in_y
 
 # circle centered at (-0.2 * aspect, -0.48)
-v18 = sub v0 v7
-v19 = const -0.48
-v20 = sub v1 v19
-v21 = mul v18 v18
-v22 = mul v20 v20
-v23 = add v21 v22
-v24 = const 0.50
-v25 = mul v24 v24
-v26 = leq v23 v25
+f_cir_dx = sub f_x f_cir_x
+c_cir_y = const -0.48
+f_cir_dy = sub f_y c_cir_y
+f_cir_dx_sq = mul f_cir_dx f_cir_dx
+f_cir_dy_sq = mul f_cir_dy f_cir_dy
+f_cir_dist_sq = add f_cir_dx_sq f_cir_dy_sq
+c_cir_radius = const 0.50
+f_cir_radius_sq = mul c_cir_radius c_cir_radius
+b_cir = leq f_cir_dist_sq f_cir_radius_sq
 
 # triangle centered at (0.2 * aspect, 0.30)
-v27 = sub v0 v5
-v28 = abs v27
-v29 = const 0.30
-v30 = sub v1 v29
-v31 = const 1.732
-v32 = mul v31 v28
-v33 = add v30 v32
-v34 = const 0.66
-v35 = const -0.33
-v36 = leq v30 v34
-v37 = leq v35 v30
-v38 = leq v33 v34
-v39 = and v36 v37
-v40 = and v39 v38
+f_tri_dx = sub f_x f_tri_x
+f_tri_dx_abs = abs f_tri_dx
+c_tri_y = const 0.30
+f_tri_dy = sub f_y c_tri_y
+c_sqrt_3 = const 1.732
+f_tri_slant = mul c_sqrt_3 f_tri_dx_abs
+f_tri_slant_y = add f_tri_dy f_tri_slant
+c_tri_top = const 0.66
+c_tri_bottom = const -0.33
+b_tri_below_top = leq f_tri_dy c_tri_top
+b_tri_above_bottom = leq c_tri_bottom f_tri_dy
+b_tri_in_slant = leq f_tri_slant_y c_tri_top
+b_tri_in_y = and b_tri_below_top b_tri_above_bottom
+b_tri = and b_tri_in_y b_tri_in_slant
 
 # hexagon centered at (0.6 * aspect, -0.38)
-v41 = sub v0 v6
-v42 = abs v41
-v43 = const -0.38
-v44 = sub v1 v43
-v45 = abs v44
-v46 = const 0.60
-v47 = const 0.52
-v48 = leq v42 v46
-v49 = leq v45 v47
-v50 = mul v31 v42
-v51 = add v50 v45
-v52 = const 1.04
-v53 = leq v51 v52
-v54 = and v48 v49
-v55 = and v54 v53
+f_hex_dx = sub f_x f_hex_x
+f_hex_dx_abs = abs f_hex_dx
+c_hex_y = const -0.38
+f_hex_dy = sub f_y c_hex_y
+f_hex_dy_abs = abs f_hex_dy
+c_hex_half_width = const 0.60
+c_hex_half_height = const 0.52
+b_hex_in_x = leq f_hex_dx_abs c_hex_half_width
+b_hex_in_y = leq f_hex_dy_abs c_hex_half_height
+f_hex_slant_x = mul c_sqrt_3 f_hex_dx_abs
+f_hex_slant_sum = add f_hex_slant_x f_hex_dy_abs
+c_hex_slant_limit = const 1.04
+b_hex_in_slant = leq f_hex_slant_sum c_hex_slant_limit
+b_hex_in_box = and b_hex_in_x b_hex_in_y
+b_hex = and b_hex_in_box b_hex_in_slant
 
-# bg color
-v56 = const 0.173
-v57 = const 0.243
-v58 = const 0.314
+f_r0 = select b_sq c_sq_r c_bg_r
+f_g0 = select b_sq c_sq_g c_bg_g
+f_b0 = select b_sq c_sq_b c_bg_b
 
-# square color
-v59 = const 0.102
-v60 = const 0.737
-v61 = const 0.612
+f_r1 = select b_cir c_cir_r f_r0
+f_g1 = select b_cir c_cir_g f_g0
+f_b1 = select b_cir c_cir_b f_b0
 
-# circle color
-v62 = const 0.204
-v63 = const 0.596
-v64 = const 0.859
+f_r2 = select b_tri c_tri_r f_r1
+f_g2 = select b_tri c_tri_g f_g1
+f_b2 = select b_tri c_tri_b f_b1
 
-# triangle color
-v65 = const 0.945
-v66 = const 0.769
-v67 = const 0.059
+f_r3 = select b_hex c_hex_r f_r2
+f_g3 = select b_hex c_hex_g f_g2
+f_b3 = select b_hex c_hex_b f_b2
 
-# hexagon color
-v68 = const 0.906
-v69 = const 0.298
-v70 = const 0.235
-
-# draw square over bg
-v71 = select v17 v59 v56
-v72 = select v17 v60 v57
-v73 = select v17 v61 v58
-
-# draw circle over square, bg
-v74 = select v26 v62 v71
-v75 = select v26 v63 v72
-v76 = select v26 v64 v73
-
-# draw triangle over circle, square, bg
-v77 = select v40 v65 v74
-v78 = select v40 v66 v75
-v79 = select v40 v67 v76
-
-# draw hexagon over triangle, circle, square, bg
-v80 = select v55 v68 v77
-v81 = select v55 v69 v78
-v82 = select v55 v70 v79
-
-return v80 v81 v82
+return f_r3 f_g3 f_b3

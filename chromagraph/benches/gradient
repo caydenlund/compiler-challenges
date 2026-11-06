@@ -1,19 +1,20 @@
 # draws a gradient based on `x` and `y`
 
-v0 = x
-v1 = y
-v2 = aspect
+f_x = x
+f_y = y
+f_aspect = aspect
+
+c_0 = const 0.0
+c_1 = const 1.0
+c_2 = const 2.0
 
 # y in [-1, 1] => r in [0, 1]
-v3 = const 1.0
-v4 = add v1 v3
-v5 = const 2.0
-v6 = div v4 v5
+f_2r = add f_y c_1
+f_r = div f_2r c_2
 
 # x in [-aspect, aspect] => g in [0, 1]
-v7 = add v0 v2
-v8 = mul v2 v5
-v9 = div v7 v8
+f_2ag = add f_x f_aspect
+f_2a = mul f_aspect c_2
+f_g = div f_2ag f_2a
 
-v10 = const 0.0
-return v6 v9 v10
+return f_r f_g c_0

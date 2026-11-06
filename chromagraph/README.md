@@ -14,37 +14,33 @@ Here's a simple example:
 ```
 # draws a white circle on a black background
 
-v0 = x
-v1 = y
-v2 = aspect
+f_x = x
+f_y = y
+f_aspect = aspect
 
-# radius = min(aspect, 1)
-v3 = const 1.0
-v4 = min v3 v2
+c_0 = const 0.0
+c_1 = const 1.0
 
-# x^2 + y^2
-v5 = mul v0 v0
-v6 = mul v1 v1
-v7 = add v5 v6
+f_x2 = mul f_x f_x
+f_y2 = mul f_y f_y
+f_dist_sq = add f_x2 f_y2
 
-# is inside circle?
-v8 = mul v4 v4
-v9 = leq v7 v8
+f_radius = min f_aspect c_1
+f_radius_sq = mul f_radius f_radius
+b_in_square = leq f_dist_sq f_radius_sq
 
-# choose color: black or white
-v10 = const 0.0
-v11 = select v9 v3 v10
+f_color = select b_in_square c_1 c_0
 
-return v11 v11 v11
+return f_color f_color f_color
 ```
 
 If you're having trouble visualizing what these primitives mean, here's a more readable representation of the same computation:
 
 ```rust
 fn circle(x: f32, y: f32, aspect: f32) -> [f32; 3] {
-    let radius = f32::min(aspect, 1.0);
     let dist_sq = (x * x) + (y * y);
 
+    let radius = f32::min(aspect, 1.0);
     let radius_sq = radius * radius;
     if dist_sq <= radius_sq {
         [1.0, 1.0, 1.0]
