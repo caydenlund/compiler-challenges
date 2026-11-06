@@ -132,3 +132,4 @@ They vary in complexity, roughly in the following order:
 - `gradient`: draws a gradient depending only on `x/aspect` and `y`
 - `circle`: draws a white circle on a black background
 - `simple-shapes`: draws a square, a circle, a triangle, and a hexagon
+- `graph`: plots `y = x - x^3 / 6 + x^5 / 120 - x^7 / 5040`

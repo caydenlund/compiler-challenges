@@ -1,0 +1,113 @@
+# plots `y = x - x^3 / 6 + x^5 / 120 - x^7 / 5040`
+
+
+# inputs & constants
+# ------------------
+
+f_x = x
+f_x_abs = abs f_x
+
+f_y = y
+f_y_abs = abs f_y
+
+c_0_1 = const 0.1
+c_0_5 = const 0.5
+c_0_8 = const 0.8
+c_1 = const 1.0
+c_2 = const 2.0
+c_6 = const 6.0
+c_24 = const 24.0
+c_120 = const 120.0
+c_720 = const 720.0
+c_5040 = const 5040.0
+c_scale = const 5.0
+c_gridline_interval = const 1.0
+c_line_thickness = const 0.007
+
+f_x_plot = mul f_x c_scale
+f_y_plot = mul f_y c_scale
+
+
+# grid lines
+# ----------
+
+f_gridline_thickness = mul c_line_thickness c_scale
+
+f_xgridline_0 = div f_x_plot c_gridline_interval
+f_xgridline_1 = fpart f_xgridline_0
+f_xgridline_2 = abs f_xgridline_1
+f_xgridline_3 = sub c_1 f_xgridline_2
+f_xgridline_4 = min f_xgridline_2 f_xgridline_3
+b_xgridline = lt f_xgridline_4 f_gridline_thickness
+
+f_ygridline_0 = div f_y_plot c_gridline_interval
+f_ygridline_1 = fpart f_ygridline_0
+f_ygridline_2 = abs f_ygridline_1
+f_ygridline_3 = sub c_1 f_ygridline_2
+f_ygridline_4 = min f_ygridline_2 f_ygridline_3
+b_ygridline = lt f_ygridline_4 f_gridline_thickness
+
+b_gl = or b_xgridline b_ygridline
+
+
+# axis lines
+# ----------
+
+b_xaxis = lt f_x_abs c_line_thickness
+b_yaxis = lt f_y_abs c_line_thickness
+b_axis = or b_xaxis b_yaxis
+
+
+# fn lines
+# --------
+# f(x)  = x - x^3 / 6 + x^5 / 120 - x^7 / 5040
+# f'(x) = 1 - x^2 / 2 + x^4 / 24  - x^6 / 720
+
+f_x2 = mul f_x_plot f_x_plot
+f_x3 = mul f_x2 f_x_plot
+f_x4 = mul f_x3 f_x_plot
+f_x5 = mul f_x4 f_x_plot
+f_x6 = mul f_x5 f_x_plot
+f_x7 = mul f_x6 f_x_plot
+
+# f(x)
+f_line_plot_0 = div f_x3 c_6
+f_line_plot_1 = sub f_x_plot f_line_plot_0
+f_line_plot_2 = div f_x5 c_120
+f_line_plot_3 = add f_line_plot_1 f_line_plot_2
+f_line_plot_4 = div f_x7 c_5040
+f_line_plot_5 = sub f_line_plot_3 f_line_plot_4
+f_line = div f_line_plot_5 c_scale
+f_ydiff = sub f_line f_y
+f_ydiff_abs = abs f_ydiff
+
+# f'(x) for uniform line thickness
+f_slope_0 = div f_x2 c_2
+f_slope_1 = sub c_1 f_slope_0
+f_slope_2 = div f_x4 c_24
+f_slope_3 = add f_slope_1 f_slope_2
+f_slope_4 = div f_x6 c_720
+f_slope = sub f_slope_3 f_slope_4
+f_slope_sq = mul f_slope f_slope
+f_gradient_sq = add f_slope_sq c_1
+f_gradient = sqrt f_gradient_sq
+
+f_line_tolerance = mul c_line_thickness f_gradient
+b_line = lt f_ydiff_abs f_line_tolerance
+
+# select color
+# ------------
+
+f_r0 = select b_gl c_0_5 c_0_8
+f_g0 = select b_gl c_0_5 c_0_8
+f_b0 = select b_gl c_0_5 c_0_8
+
+f_r1 = select b_axis c_0_1 f_r0
+f_g1 = select b_axis c_0_1 f_g0
+f_b1 = select b_axis c_0_1 f_b0
+
+f_r2 = select b_line c_0_8 f_r1
+f_g2 = select b_line c_0_1 f_g1
+f_b2 = select b_line c_0_1 f_b1
+
+return f_r2 f_g2 f_b2

@@ -18,7 +18,6 @@ struct InterpArgs {
     #[arg(short = 'H', long, default_value_t = 1024)]
     height: usize,
 }
-
 fn main() -> io::Result<()> {
     let args = InterpArgs::parse();
     let mut image = Image::new(args.width, args.height);
@@ -63,8 +62,8 @@ fn interp(prgm: &Chromagraph, x: f32, y: f32, aspect: f32) -> [f32; 3] {
             Expr::Unary(UnaryOp::Neg, v) => Float(-val_float(v)),
             Expr::Unary(UnaryOp::Abs, v) => Float(val_float(v).abs()),
             Expr::Unary(UnaryOp::Sqrt, v) => Float(val_float(v).sqrt()),
-            Expr::Unary(UnaryOp::Ipart, v) => Float(val_float(v).fract()),
-            Expr::Unary(UnaryOp::Fpart, v) => Float(val_float(v).trunc()),
+            Expr::Unary(UnaryOp::Ipart, v) => Float(val_float(v).trunc()),
+            Expr::Unary(UnaryOp::Fpart, v) => Float(val_float(v).fract()),
             Expr::Binary(BinaryOp::Add, l, r) => Float(val_float(l) + val_float(r)),
             Expr::Binary(BinaryOp::Sub, l, r) => Float(val_float(l) - val_float(r)),
             Expr::Binary(BinaryOp::Mul, l, r) => Float(val_float(l) * val_float(r)),
