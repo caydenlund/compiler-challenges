@@ -50,7 +50,7 @@ fn circle(x: f32, y: f32, aspect: f32) -> [f32; 3] {
 }
 ```
 
-Your challenge is to execute this program, and the other chromagraphs defined here, as quickly as possible.
+Your challenge is to execute this program, and the other Chromagraphs defined here, as quickly as possible.
 
 To start, here's a minimal interpreter in Python:
 
@@ -128,4 +128,9 @@ They vary in complexity, roughly in the following order:
 - `gradient`: draws a gradient depending only on `x/aspect` and `y`
 - `circle`: draws a white circle on a black background
 - `simple-shapes`: draws a square, a circle, a triangle, and a hexagon
-- `graph`: plots `y = x - x^3 / 6 + x^5 / 120 - x^7 / 5040`
+- `graph`: plots `y = x - x^3 / 6 + x^5 / 120 - x^7 / 5040` (taylor polynomial for sine)
+
+## Additional Challenge: generating chromagraphs
+
+Can you design a higher-level language that you can translate to Chromagraphs' primitive assembly-like instructions?
+Can you design interesting graphics or fractals that take more work than you could feasibly write in a Chromagraph by hand?
