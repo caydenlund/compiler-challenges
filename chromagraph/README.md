@@ -129,6 +129,7 @@ They vary in complexity, roughly in the following order:
 - `circle`: draws a white circle on a black background
 - `simple-shapes`: draws a square, a circle, a triangle, and a hexagon
 - `graph`: plots `y = x - x^3 / 6 + x^5 / 120 - x^7 / 5040` (taylor polynomial for sine)
+- `prospero`: a direct conversion of `prospero.vm` from [the Prospero Challenge](https://www.mattkeeter.com/projects/prospero/) (renders text)
 
 ## Additional Challenge: generating chromagraphs
 
