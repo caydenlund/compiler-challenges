@@ -131,6 +131,8 @@ They vary in complexity, roughly in the following order:
 - `graph`: plots `y = x - x^3 / 6 + x^5 / 120 - x^7 / 5040` (taylor polynomial for sine)
 - `sierpinski-{4,8,12}` (generated): draws the Sierpinski triangle with 4, 8, and 12 iterations
 - `julia-{128,256,512,1024}` (generated): draws the Julia fractal with `c = -0.8 + 0.156i` and 128, 256, 512, and 1024 iterations
+- `excess-bools`: threshold pattern that keeps 100 boolean values live (stress test integer register allocator)
+- `excess-floats`: threshold pattern that keeps 100 float values live (stress test vector register allocator)
 - `prospero`: a direct conversion of `prospero.vm` from [the Prospero Challenge](https://www.mattkeeter.com/projects/prospero/) (renders text)
 
 ## Additional challenge: generating chromagraphs
