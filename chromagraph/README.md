@@ -129,9 +129,11 @@ They vary in complexity, roughly in the following order:
 - `circle`: draws a white circle on a black background
 - `simple-shapes`: draws a square, a circle, a triangle, and a hexagon
 - `graph`: plots `y = x - x^3 / 6 + x^5 / 120 - x^7 / 5040` (taylor polynomial for sine)
+- `sierpinski-{4,8,12}` (generated): draws the Sierpinski triangle with 4, 8, and 12 iterations
+- `julia-{128,256,512,1024}` (generated): draws the Julia fractal with `c = -0.8 + 0.156i` and 128, 256, 512, and 1024 iterations
 - `prospero`: a direct conversion of `prospero.vm` from [the Prospero Challenge](https://www.mattkeeter.com/projects/prospero/) (renders text)
 
-## Additional Challenge: generating chromagraphs
+## Additional challenge: generating chromagraphs
 
 Can you design a higher-level language that you can translate to Chromagraphs' primitive assembly-like instructions?
 Can you design interesting graphics or fractals that take more work than you could feasibly write in a Chromagraph by hand?
