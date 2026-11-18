@@ -1,3 +1,7 @@
+# Generated from 'benches/sierpinski.cgen' at 2026-11-18 14:55:06 -0500
+# Parameters:
+#   iters = 8
+
 v0 = const 2
 v1 = const 3
 v2 = sqrt v1

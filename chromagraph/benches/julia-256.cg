@@ -1,3 +1,9 @@
+# Generated from 'benches/julia.cgen' at 2026-11-18 14:55:03 -0500
+# Parameters:
+#   cx = -0.8
+#   cy = 0.156
+#   iters = 256
+
 v0 = const 0
 v1 = x
 v2 = y
@@ -4873,36 +4879,25 @@ v4871 = add v4853 v4870
 v4872 = select v4859 v4853 v4871
 v4873 = const 256
 v4874 = div v4872 v4873
-v4875 = const 8
-v4876 = mul v4875 v4874
-v4877 = const 2
-v4878 = const 0
+v4875 = sqrt v4874
+v4876 = const 0.12
+v4877 = const 0.88
+v4878 = mul v4877 v4875
 v4879 = add v4876 v4878
-v4880 = fpart v4879
-v4881 = mul v4877 v4880
-v4882 = const 1
-v4883 = sub v4881 v4882
-v4884 = abs v4883
-v4885 = const 2
-v4886 = const 0.33
-v4887 = add v4876 v4886
-v4888 = fpart v4887
-v4889 = mul v4885 v4888
-v4890 = const 1
-v4891 = sub v4889 v4890
-v4892 = abs v4891
-v4893 = const 2
-v4894 = const 0.67
-v4895 = add v4876 v4894
-v4896 = fpart v4895
-v4897 = mul v4893 v4896
-v4898 = const 1
-v4899 = sub v4897 v4898
-v4900 = abs v4899
-v4901 = const 0
-v4902 = const 0
-v4903 = const 0
-v4904 = select v4859 v4884 v4901
-v4905 = select v4859 v4892 v4902
-v4906 = select v4859 v4900 v4903
-return v4904 v4905 v4906
+v4880 = const 0.02
+v4881 = const 0.72
+v4882 = mul v4881 v4874
+v4883 = add v4880 v4882
+v4884 = const 0.12
+v4885 = const 0.58
+v4886 = const 1
+v4887 = sub v4886 v4875
+v4888 = mul v4885 v4887
+v4889 = add v4884 v4888
+v4890 = const 0
+v4891 = const 0
+v4892 = const 0
+v4893 = select v4859 v4879 v4890
+v4894 = select v4859 v4883 v4891
+v4895 = select v4859 v4889 v4892
+return v4893 v4894 v4895
